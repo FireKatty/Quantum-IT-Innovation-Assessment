@@ -14,9 +14,10 @@ PORT = process.env.PORT || 5432;
 const connectToDatabase = require("./db/connectToDatabase");
 
 const authRoutes = require("./routes/authRoutes");
+const dataRoutes = require("./routes/dataRoutes")
 
 app.use('/api/auth',authRoutes);
-// app.use('/api',dataRoutes);
+app.use('/api/data',dataRoutes);
 
 app.get('/',(req,res)=>{
     res.status(200).send({message:"Api test Successful"});

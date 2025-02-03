@@ -58,7 +58,7 @@ const login = async(req,res)=>{
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000), 
         });
 
-        res.status(200).send({message:"login successful",token});
+        res.status(200).send({message:"login successful",token,user});
 
     } catch (error) {
         res.status(500).send({message:"login failed"});
