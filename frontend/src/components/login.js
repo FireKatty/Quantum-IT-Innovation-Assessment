@@ -167,61 +167,6 @@ const Login = ({ setToken }) => {
   };
 
   // Handle Form Submit
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     if (!validateInputs()) return;
-
-//     let data;
-//     try {
-//         if (isSignup) {
-//             const response = await fetch("http://localhost:9876/api/auth/signup", {
-//               method: "POST",
-//               headers: {
-//                 "Content-Type": "application/json",
-//               },
-//               body: JSON.stringify(formData),
-//             });
-//             data = await response.json();
-//         } else {
-//             const response = await fetch("http://localhost:9876/api/auth/login", {
-//               method: "POST",
-//               headers: {
-//                 "Content-Type": "application/json",
-//               },
-//               body: JSON.stringify({
-//                 email: formData.email,
-//                 password: formData.password,
-//               }),
-//             });
-//             data = await response.json();
-//         }
-      
-//         if (data.token) {
-//         console.log(data.token);
-//         localStorage.setItem("token", data.token);
-//         localStorage.setItem("user", JSON.stringify(data.user));
-//         navigate("/home"); // Redirect to home page after login/signup
-//         } else {
-//         throw new Error(data.error || "Authentication failed");
-//         }
-      
-//     } catch (error) {
-//       console.error("Error during authentication:", error.response?.data || error.message);
-//       const serverError = error.response?.data?.error || "Authentication failed.";
-//       if (serverError.includes("Email already exists")) {
-//         setErrors({ email: serverError });
-//         console.log(errors.email)
-//       } else if (serverError.includes("Invalid credentials")) {
-//         setErrors({ password: serverError });
-//       } else {
-//         setErrors({ server: serverError });
-//       }
-
-//       setTimeout(() => setErrors({}), 5000); // Remove server error after 5 seconds
-//     }
-//   };
-
 const handleSubmit = async (e) => {
     e.preventDefault();
   
