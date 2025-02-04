@@ -76,128 +76,168 @@ const Input = styled.input`
   color: white;
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  text-align: left;
+  margin-bottom: 5px;
+`;
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  margin-top: 10px;
-  background: #00ffcc;
-  color: black;
+  background: #00796b;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
+  font-size: 16px;
+  &:hover {
+    background: #004d40;
+  }
 `;
 
 const SwitchText = styled.p`
-  cursor: pointer;
   color: #00ffcc;
+  cursor: pointer;
   margin-top: 10px;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Login = ({ setToken }) => {
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    dob: '',
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    dob: "",
   });
 
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  // Reset form when switching between login and sign-up
+  useEffect(() => {
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      dob: "",
+    });
+    setErrors({});
+  }, [isSignup]);
+
+  // Handle Input Change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const navigate = useNavigate();
+  // Validate Inputs
+  const validateInputs = () => {
+    let newErrors = {};
 
-  useEffect(()=>{
-    setFormData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        dob: '',
-    })
-  },[isSignup])
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-   
-//     if (isSignup) {
-//        {data} = await axios.post('http://localhost:9876/api/auth/sign', formData);
-//     } else {
-//        { data } = await axios.post('http://localhost:9876/api/auth/login', { 
-//         email: formData.email, 
-//         password: formData.password 
-//       });
-//     }
-//     if (data.token){
-//         console.log(data.token)
-//         localStorage.setItem('token', data.token);
-//         localStorage.setItem('user', JSON.stringify(data.user));
-//         navigate("/");
-//     //   localStorage.setItem('token', data.token);
-//     //   localStorage.setItem('user', JSON.stringify(data.user));
-//     //   setToken(data.token);
-//     }
-//   };
-
-
-const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    let data;
     if (isSignup) {
-      const response = await axios.post('http://localhost:9876/api/auth/signup', formData);
-      data = response.data;
-    } else {
-      const response = await axios.post('http://localhost:9876/api/auth/login', { 
-        email: formData.email, 
-        password: formData.password 
-      });
-      data = response.data;
+      if (!formData.name.trim()) newErrors.name = "Name is required.";
+      if (!formData.dob) newErrors.dob = "Date of Birth is required.";
+      if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm Password is required.";
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match.";
+      }
     }
-  
-    if (data.token) {
-      console.log(data.token);
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      navigate("/"); // Assuming `navigate` is available for redirection
+
+    if (!formData.email.trim()) newErrors.email = "Email is required.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Invalid email address.";
     }
-};
-  
+
+    if (!formData.password) newErrors.password = "Password is required.";
+    else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long.";
+    }
+
+    setErrors(newErrors);
+
+    // Automatically remove errors after 5 seconds
+    setTimeout(() => setErrors({}), 5000);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Handle Form Submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateInputs()) return;
+
+    let data;
+    try {
+      if (isSignup) {
+        const response = await axios.post("http://localhost:9876/api/auth/signup", formData);
+        data = response.data;
+      } else {
+        const response = await axios.post("http://localhost:9876/api/auth/login", {
+          email: formData.email,
+          password: formData.password,
+        });
+        data = response.data;
+      }
+
+      if (data.token) {
+        console.log(data.token);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error during authentication:", error.response?.data?.message || error.message);
+      setErrors({ server: error.response?.data?.message || "Authentication failed." });
+      setTimeout(() => setErrors({}), 5000); // Remove server error after 5 seconds
+    }
+  };
 
   return (
     <Container>
-        <LoginBox>
-      <Card>
-        <Header>{isSignup ? 'Sign Up' : 'Login'}</Header>
-        <Avatar>
+      <LoginBox>
+        <Card>
+          <Header>{isSignup ? "Sign Up" : "Login"}</Header>
+          <Avatar>
             <AvatarImage src="icon.jpg" alt="User Avatar" />
-        </Avatar>
-        <form onSubmit={handleSubmit}>
-            {isSignup ? (
-                <>
-                <Input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
-                <Input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-                <Input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-                <Input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
-                <Input type="date" name="dob" placeholder="Date of Birth" value={formData.dob} onChange={handleChange} required />
-                </>
-            ) : (
-                <>
-                <Input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-                <Input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-                </>
+          </Avatar>
+          <form onSubmit={handleSubmit}>
+            {isSignup && (
+              <>
+                <Input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} error={!!errors.name} />
+                {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
+              </>
+            )}
+            <Input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} error={!!errors.email} />
+            {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+
+            <Input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} error={!!errors.password} />
+            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+
+            {isSignup && (
+              <>
+                <Input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} error={!!errors.confirmPassword} />
+                {errors.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage>}
+
+                <Input type="date" name="dob" placeholder="Date of Birth" value={formData.dob} onChange={handleChange} error={!!errors.dob} />
+                {errors.dob && <ErrorMessage>{errors.dob}</ErrorMessage>}
+              </>
             )}
 
-            <Button type="submit">{isSignup ? 'Sign Up' : 'Login'}</Button>
-        </form>
+            {errors.server && <ErrorMessage>{errors.server}</ErrorMessage>}
 
-        <SwitchText onClick={() => setIsSignup(!isSignup)}>
-          {isSignup ? 'Already have an account? Login' : "Don't have an account? Sign Up"}
-        </SwitchText>
-      </Card>
+            <Button type="submit">{isSignup ? "Sign Up" : "Login"}</Button>
+          </form>
+
+          <SwitchText onClick={() => setIsSignup(!isSignup)}>
+            {isSignup ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+          </SwitchText>
+        </Card>
       </LoginBox>
     </Container>
   );

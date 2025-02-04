@@ -510,6 +510,23 @@ const Button = styled.button`
   }
 `;
 
+const StatusButton = styled.button`
+  border: 2px solid ${(props) => (props.status === "Active" ? "green" : "red")};
+  color: ${(props) => (props.status === "Active" ? "green" : "red")};
+  background: transparent;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: ${(props) => (props.status === "Active" ? "green" : "red")};
+    color: white;
+  }
+`;
+
+
 const DrawerContainer = styled.div`
   position: fixed;
   right: 0;
@@ -573,6 +590,8 @@ const ErrorMessage = styled.div`
   font-size: 14px;
   margin-top: 5px;
 `;
+
+
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -910,16 +929,10 @@ const AdminDashboard = () => {
                   </Select>
                 </TableCell>
                 <TableCell>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      color: user.status === "Active" ? "green" : "red",
-                      borderColor: user.status === "Active" ? "green" : "red",
-                    }}
-                    onClick={() => toggleUserStatus(user.id)}
-                  >
+                <StatusButton status={user.status} onClick={() => toggleUserStatus(user.id)}>
                     {user.status}
-                  </Button>
+                </StatusButton>
+
                 </TableCell>
                 <TableCell>
                   <IconButton onClick={() => {
