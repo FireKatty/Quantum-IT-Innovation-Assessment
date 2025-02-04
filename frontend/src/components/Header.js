@@ -1,93 +1,3 @@
-// import React from "react";
-// import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
-
-// // Styled Components
-// const AppBarStyled = styled.div`
-//   position: fixed;
-//   z-index: 1201;
-//   background-color: #2c3e50;
-//   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0);
-//   background: rgba(0, 0, 0, 0);
-//   width: 100%;
-// `;
-
-// const ToolbarStyled = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   padding: 16px;
-// `;
-
-// const BoxStyled = styled.div`
-//   display: flex;
-//   align-items: center;
-// `;
-
-// const AvatarStyled = styled.img`
-//   width: 40px;
-//   height: 40px;
-//   margin-right: 8px;
-// `;
-
-// const TypographyStyled = styled.div`
-//   font-weight: ${(props) => (props.variant === "h6" ? "bold" : "normal")};
-//   color: ${(props) => (props.variant === "h6" ? "#1a1a1a" : "black")};
-//   font-size: ${(props) => (props.variant === "h6" ? "1.25rem" : "1rem")};
-// `;
-
-// const ButtonStyled = styled.button`
-//   border: 1px solid #2c3e50;
-//   color: #2c3e50;
-//   padding: 8px 16px;
-//   background: transparent;
-//   cursor: pointer;
-//   font-weight: bold;
-
-//   &:hover {
-//     background-color: #1a1a1a;
-//     color: #ecf0f1;
-//   }
-// `;
-
-// const Header = () => {
-//   const token = localStorage.getItem("token");
-//   const data = localStorage.getItem("data");
-//   const user = data ? JSON.parse(data) : null;
-//   const userName = user?.result?.name || "User";
-//   const navigate = useNavigate();
-
-//   const onLogout = () => {
-//     localStorage.clear();
-//     navigate('/');
-//   };
-
-//   return (
-//     <>
-//       <AppBarStyled>
-//         <ToolbarStyled>
-//           {/* Left Side: Logo and Company Name */}
-//           <BoxStyled>
-//             <AvatarStyled src="https://vrvsecurity.in/static/media/favicon.cc3b0694d956aaccd51d.ico" alt="Company Logo" />
-//             <TypographyStyled variant="h6">VRV Security</TypographyStyled>
-//           </BoxStyled>
-
-//           {/* Right Side: Welcome message and Logout button */}
-//           <BoxStyled>
-//             <TypographyStyled variant="body1">Welcome, {userName}!</TypographyStyled>
-//             <ButtonStyled onClick={onLogout}>Logout</ButtonStyled>
-//           </BoxStyled>
-//         </ToolbarStyled>
-//       </AppBarStyled>
-
-//       {/* Spacer to prevent content overlap */}
-//       <ToolbarStyled style={{ height: "64px" }} />
-//     </>
-//   );
-// };
-
-// export default Header;
-
-
 import React from "react";
 import styled from "styled-components";
 
@@ -151,10 +61,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      // await fetch("http://localhost:9876/api/auth/logout", { method: "POST", credentials: "include" });
-      console.log("logout")
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      localStorage.clear();
       window.location.href = "/"; // Redirect to login page
     } catch (error) {
       console.error("Logout failed:", error);

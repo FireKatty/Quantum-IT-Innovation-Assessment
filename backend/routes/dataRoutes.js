@@ -1,5 +1,5 @@
 const express = require("express");
-const protectRoute = require("../middleware/protectMiddleware");
+const protectRoute = require("../middleware/protectRoute");
 const router = express.Router();
 
 const path = require("path");
@@ -8,11 +8,11 @@ const path = require("path");
 const { getData, fetchData,updateData, updateRole, updateStatus, deleteData } = require("../controllers/dataController");
 
 // Define the routes
-router.post('/create',getData);
-router.get('/list', fetchData);
-router.put('/editrole/:id', updateRole);
-router.put('/toggleStatus/:id' , updateStatus);
-router.put('/update/:id', updateData);
-router.delete('/delete/:id' , deleteData);
+router.post('/create',protectRoute,getData);
+router.get('/list',protectRoute, fetchData);
+router.put('/editrole/:id',protectRoute, updateRole);
+router.put('/toggleStatus/:id' , protectRoute,updateStatus);
+router.put('/update/:id',protectRoute, updateData);
+router.delete('/delete/:id' ,protectRoute , deleteData);
 
 module.exports = router;

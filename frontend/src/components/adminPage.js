@@ -213,7 +213,7 @@ const AdminDashboard = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                authorization: JSON.parse(localStorage.getItem('token'))
+                authorization: localStorage.getItem('token')
             },
             body: JSON.stringify({ newUser, permissions }),
         });
@@ -255,7 +255,7 @@ const AdminDashboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+          authorization: localStorage.getItem('token')
         },
       });
       if (response.ok) {
@@ -282,7 +282,7 @@ const AdminDashboard = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          authorization: JSON.parse(localStorage.getItem('token'))
+          authorization: localStorage.getItem('token')
         },
         body: JSON.stringify({ role, permissions }),
       });
@@ -321,7 +321,7 @@ const AdminDashboard = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          authorization: JSON.parse(localStorage.getItem('token'))
+          authorization: localStorage.getItem('token')
         },
         body: JSON.stringify({ editingUser, permissions }),
       });
@@ -344,7 +344,7 @@ const AdminDashboard = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          authorization: JSON.parse(localStorage.getItem('token'))
+          authorization: localStorage.getItem('token')
         },
       });
       if (response.ok) {
@@ -364,7 +364,7 @@ const AdminDashboard = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          authorization: JSON.parse(localStorage.getItem('token'))
+          authorization: localStorage.getItem('token')
         },
       });
       if (response.ok) {

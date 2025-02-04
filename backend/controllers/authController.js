@@ -32,14 +32,6 @@ const signup = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    // Set cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    });
-
     // Send response
     res.status(201).json({
       message: "Signup successful",
@@ -78,13 +70,6 @@ const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    // Set cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    });
 
     // Send response
     res.status(200).json({

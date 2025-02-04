@@ -167,59 +167,126 @@ const Login = ({ setToken }) => {
   };
 
   // Handle Form Submit
-  const handleSubmit = async (e) => {
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!validateInputs()) return;
+
+//     let data;
+//     try {
+//         if (isSignup) {
+//             const response = await fetch("http://localhost:9876/api/auth/signup", {
+//               method: "POST",
+//               headers: {
+//                 "Content-Type": "application/json",
+//               },
+//               body: JSON.stringify(formData),
+//             });
+//             data = await response.json();
+//         } else {
+//             const response = await fetch("http://localhost:9876/api/auth/login", {
+//               method: "POST",
+//               headers: {
+//                 "Content-Type": "application/json",
+//               },
+//               body: JSON.stringify({
+//                 email: formData.email,
+//                 password: formData.password,
+//               }),
+//             });
+//             data = await response.json();
+//         }
+      
+//         if (data.token) {
+//         console.log(data.token);
+//         localStorage.setItem("token", data.token);
+//         localStorage.setItem("user", JSON.stringify(data.user));
+//         navigate("/home"); // Redirect to home page after login/signup
+//         } else {
+//         throw new Error(data.error || "Authentication failed");
+//         }
+      
+//     } catch (error) {
+//       console.error("Error during authentication:", error.response?.data || error.message);
+//       const serverError = error.response?.data?.error || "Authentication failed.";
+//       if (serverError.includes("Email already exists")) {
+//         setErrors({ email: serverError });
+//         console.log(errors.email)
+//       } else if (serverError.includes("Invalid credentials")) {
+//         setErrors({ password: serverError });
+//       } else {
+//         setErrors({ server: serverError });
+//       }
+
+//       setTimeout(() => setErrors({}), 5000); // Remove server error after 5 seconds
+//     }
+//   };
+
+const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!validateInputs()) return;
-
+  
     let data;
     try {
-        if (isSignup) {
-            const response = await fetch("http://localhost:9876/api/auth/signup", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(formData),
-            });
-            data = await response.json();
-        } else {
-            const response = await fetch("http://localhost:9876/api/auth/login", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: formData.email,
-                password: formData.password,
-              }),
-            });
-            data = await response.json();
-        }
-      
+      let response;
+      // Determine if it's a signup or login request
+      if (isSignup) {
+        response = await fetch("http://localhost:9876/api/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+      } else {
+        response = await fetch("http://localhost:9876/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+      }
+  
+      // Check if response is successful
+      if (response.ok) {
+        data = await response.json();
         if (data.token) {
-        console.log(data.token);
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/home"); // Redirect to home page after login/signup
+          console.log(data.token);
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          navigate("/home"); // Redirect to home page after login/signup
         } else {
-        throw new Error(data.error || "Authentication failed");
+          throw new Error(data.error || "Authentication failed");
         }
-      
+      } else {
+        // If response is not OK, parse the response error
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Something went wrong.");
+      }
     } catch (error) {
-      console.error("Error during authentication:", error.response?.data || error.message);
-      const serverError = error.response?.data?.error || "Authentication failed.";
+      console.error("Error during authentication:", error.message);
+      const serverError = error.message || "Authentication failed.";
+  
+      // Handle different server errors and set them in the error state
       if (serverError.includes("Email already exists")) {
-        setErrors({ email: serverError });
+        setErrors({ email: "Email already exists." });
       } else if (serverError.includes("Invalid credentials")) {
-        setErrors({ password: serverError });
+        setErrors({ password: "Invalid credentials." });
       } else {
         setErrors({ server: serverError });
       }
-
-      setTimeout(() => setErrors({}), 5000); // Remove server error after 5 seconds
+  
+      // Automatically remove errors after 5 seconds
+      setTimeout(() => setErrors({}), 5000);
     }
   };
+  
+
 
   return (
     <Container>
