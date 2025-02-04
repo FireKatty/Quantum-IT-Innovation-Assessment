@@ -150,9 +150,9 @@ const AdminDashboard = () => {
     if (!/^\d{10}$/.test(user.phoneNumber)) {
       errors.phoneNumber = "Phone number must be 10 digits.";
     }
-    if (!/^\d+$/.test(user.salary)) {
-      errors.salary = "Salary must be a numeric value.";
-    }
+    if (!/^\d+$/.test(user.salary) || parseInt(user.salary) < 10000) {
+      errors.salary = "Salary must be a numeric value and not less than 10000.";
+    }    
     if (!user.role) {
       errors.role = "Role is required.";
     }
@@ -462,10 +462,10 @@ const AdminDashboard = () => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableCell style={{ color: "#ecf0f1" }}>ID</TableCell>
               <TableCell style={{ color: "#ecf0f1" }}>Name</TableCell>
               <TableCell style={{ color: "#ecf0f1" }}>Email</TableCell>
               <TableCell style={{ color: "#ecf0f1" }}>Phone Number</TableCell>
-              <TableCell style={{ color: "#ecf0f1" }}>ID</TableCell>
               <TableCell style={{ color: "#ecf0f1" }}>Salary</TableCell>
               <TableCell style={{ color: "#ecf0f1" }}>Role</TableCell>
               <TableCell style={{ color: "#ecf0f1" }}>Status</TableCell>

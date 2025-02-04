@@ -54,9 +54,9 @@ const ButtonStyled = styled.button`
 `;
 
 const Header = () => {
-  const data = localStorage.getItem("data");
+  const data = localStorage.getItem("user");
   const user = data ? JSON.parse(data) : null;
-  const userName = user?.result?.name || "User";
+  const userName = user?.name || "User";
 
 
   const handleLogout = async () => {
