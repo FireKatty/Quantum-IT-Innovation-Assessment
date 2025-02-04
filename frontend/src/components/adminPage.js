@@ -462,18 +462,35 @@ const AdminDashboard = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Phone Number</TableCell>
-              <TableCell>Salary</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell style={{ color: "#ecf0f1" }}>Name</TableCell>
+              <TableCell style={{ color: "#ecf0f1" }}>Email</TableCell>
+              <TableCell style={{ color: "#ecf0f1" }}>Phone Number</TableCell>
+              <TableCell style={{ color: "#ecf0f1" }}>ID</TableCell>
+              <TableCell style={{ color: "#ecf0f1" }}>Salary</TableCell>
+              <TableCell style={{ color: "#ecf0f1" }}>Role</TableCell>
+              <TableCell style={{ color: "#ecf0f1" }}>Status</TableCell>
+              <TableCell style={{ color: "#ecf0f1" }}>Action</TableCell>
             </TableRow>
           </TableHeader>
           <tbody>
-            {users.map((user) => (
+            {users.result === "Not Found" || users.length === 0 ? (
+                    <TableRow>
+                      <TableCell 
+                        colSpan={9} 
+                        style={{ 
+                          textAlign: "center", 
+                          color: "#000ecf0f1", 
+                          padding: "20px", 
+                          fontWeight: "bold", 
+                          backgroundColor: "rgba(0, 0, 0, 0.5)" 
+                        }}
+                      >
+                        No User Available
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    Array.isArray(users) &&
+              users.map((user) => (
               <TableRow key={user.id}>
                 <TableCell>{user.id}</TableCell>
                 <TableCell>{user.name}</TableCell>
@@ -509,7 +526,8 @@ const AdminDashboard = () => {
                   </IconButton>
                 </TableCell>
               </TableRow>
-            ))}
+            ))
+          )}
           </tbody>
         </Table>
       )}
