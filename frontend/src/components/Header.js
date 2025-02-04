@@ -90,7 +90,6 @@
 
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 // Styled Components
 const AppBarStyled = styled.div`
@@ -145,15 +144,21 @@ const ButtonStyled = styled.button`
 `;
 
 const Header = () => {
-  const token = localStorage.getItem("token");
   const data = localStorage.getItem("data");
   const user = data ? JSON.parse(data) : null;
   const userName = user?.result?.name || "User";
-  const navigate = useNavigate();
 
-  const onLogout = () => {
-    localStorage.clear();
-    navigate('/');
+
+  const handleLogout = async () => {
+    try {
+      // await fetch("http://localhost:9876/api/auth/logout", { method: "POST", credentials: "include" });
+      console.log("logout")
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/"; // Redirect to login page
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -169,7 +174,7 @@ const Header = () => {
           {/* Right Side: Welcome message and Logout button */}
           <BoxStyled>
             <TypographyStyled variant="body1">Welcome, {userName}!</TypographyStyled>
-            <ButtonStyled onClick={onLogout}>Logout</ButtonStyled>
+            <ButtonStyled onClick={handleLogout}>Logout</ButtonStyled>
           </BoxStyled>
         </ToolbarStyled>
       </AppBarStyled>

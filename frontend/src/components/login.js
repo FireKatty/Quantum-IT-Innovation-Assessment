@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
+
 
 const Container = styled.div`
   display: flex;
@@ -174,26 +174,49 @@ const Login = ({ setToken }) => {
 
     let data;
     try {
-      if (isSignup) {
-        const response = await axios.post("http://localhost:9876/api/auth/signup", formData);
-        data = response.data;
-      } else {
-        const response = await axios.post("http://localhost:9876/api/auth/login", {
-          email: formData.email,
-          password: formData.password,
-        });
-        data = response.data;
-      }
-
-      if (data.token) {
+        if (isSignup) {
+            const response = await fetch("http://localhost:9876/api/auth/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            });
+            data = await response.json();
+        } else {
+            const response = await fetch("http://localhost:9876/api/auth/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: formData.email,
+                password: formData.password,
+              }),
+            });
+            data = await response.json();
+        }
+      
+        if (data.token) {
         console.log(data.token);
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/");
-      }
+        navigate("/home"); // Redirect to home page after login/signup
+        } else {
+        throw new Error(data.error || "Authentication failed");
+        }
+      
     } catch (error) {
-      console.error("Error during authentication:", error.response?.data?.message || error.message);
-      setErrors({ server: error.response?.data?.message || "Authentication failed." });
+      console.error("Error during authentication:", error.response?.data || error.message);
+      const serverError = error.response?.data?.error || "Authentication failed.";
+      if (serverError.includes("Email already exists")) {
+        setErrors({ email: serverError });
+      } else if (serverError.includes("Invalid credentials")) {
+        setErrors({ password: serverError });
+      } else {
+        setErrors({ server: serverError });
+      }
+
       setTimeout(() => setErrors({}), 5000); // Remove server error after 5 seconds
     }
   };
