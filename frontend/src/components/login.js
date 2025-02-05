@@ -201,7 +201,7 @@ const handleSubmit = async (e) => {
       if (response.ok) {
         data = await response.json();
         if (data.token) {
-          console.log(data.token);
+          // console.log(data.token);
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
           navigate("/home"); // Redirect to home page after login/signup
