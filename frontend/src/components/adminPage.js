@@ -209,7 +209,7 @@ const AdminDashboard = () => {
     const permissions = getPermissionsForRole(newUser.role);
 
     try {
-        const response = await fetch("http://localhost:9876/api/data/create", {
+        const response = await fetch("https://quantum-it-innovation-assessment.onrender.com/api/data/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -251,7 +251,7 @@ const AdminDashboard = () => {
   const fetchUsersFromDatabase = async () => {
     console.log("Fetch Data")
     try {
-      const response = await fetch("http://localhost:9876/api/data/list", {
+      const response = await fetch("https://quantum-it-innovation-assessment.onrender.com/api/data/list", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -278,7 +278,7 @@ const AdminDashboard = () => {
       )
     );
     try {
-      const response = await fetch(`http://localhost:9876/api/data/editrole/${id}`, {
+      const response = await fetch(`https://quantum-it-innovation-assessment.onrender.com/api/data/editrole/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -317,7 +317,7 @@ const AdminDashboard = () => {
     setErrors({});
     const permissions = getPermissionsForRole(editingUser.role) || [];
     try {
-      const response = await fetch(`http://localhost:9876/api/data/update/${editingUser.id}`, {
+      const response = await fetch(`https://quantum-it-innovation-assessment.onrender.com/api/data/update/${editingUser.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -340,7 +340,7 @@ const AdminDashboard = () => {
 
   const handleDeleteUser = async (id) => {
     try {
-      const response = await fetch(`http://localhost:9876/api/data/delete/${id}`, {
+      const response = await fetch(`https://quantum-it-innovation-assessment.onrender.com/api/data/delete/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -360,7 +360,7 @@ const AdminDashboard = () => {
 
   const toggleUserStatus = async (id) => {
     try {
-      const response = await fetch(`http://localhost:9876/api/data/toggleStatus/${id}`, {
+      const response = await fetch(`https://quantum-it-innovation-assessment.onrender.com/api/data/toggleStatus/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

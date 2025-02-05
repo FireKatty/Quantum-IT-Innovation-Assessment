@@ -177,7 +177,7 @@ const handleSubmit = async (e) => {
       let response;
       // Determine if it's a signup or login request
       if (isSignup) {
-        response = await fetch("http://localhost:9876/api/auth/signup", {
+        response = await fetch("https://quantum-it-innovation-assessment.onrender.com/api/auth/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -185,7 +185,7 @@ const handleSubmit = async (e) => {
           body: JSON.stringify(formData),
         });
       } else {
-        response = await fetch("http://localhost:9876/api/auth/login", {
+        response = await fetch("https://quantum-it-innovation-assessment.onrender.com/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
