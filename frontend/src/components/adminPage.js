@@ -11,7 +11,7 @@ const Container = styled.div`
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  min-height: calc(100vh - 49px);
+  min-height: calc(100vh - 96px);
   opacity: 0.9;
   overflow: hidden;
 `;
@@ -83,16 +83,33 @@ const Select = styled.select`
   ${({ error }) => error && `border-color: red;`}
 `;
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
+
+const TableContainer = styled.div`
+  max-height: 400px;
+  overflow-y: auto;
   background-color: rgba(255, 255, 255, 0.3);
 `;
 
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Ensures proper column alignment */
+`;
+
 const TableHeader = styled.thead`
+  position: sticky;
+  top: 0;
+  z-index: 2;
   background-color: rgba(0, 0, 0, 0.5);
   color: #ecf0f1;
 `;
+
+const TableBody = styled.tbody`
+  display: table-row-group; /* Default display property to prevent alignment issues */
+  max-height: 343px; /* Adjust height as needed */
+  overflow-y: auto;
+`;
+
 
 const TableRow = styled.tr`
   border-bottom: 1px solid #ccc;
@@ -459,7 +476,9 @@ const AdminDashboard = () => {
       </DrawerContainer>
 
       {viewUsers && (
+        <TableContainer>
         <Table>
+        
           <TableHeader>
             <TableRow>
               <TableCell style={{ color: "#ecf0f1" }}>ID</TableCell>
@@ -472,7 +491,8 @@ const AdminDashboard = () => {
               <TableCell style={{ color: "#ecf0f1" }}>Action</TableCell>
             </TableRow>
           </TableHeader>
-          <tbody>
+          <TableBody>
+       
             {users.result === "Not Found" || users.length === 0 ? (
                     <TableRow>
                       <TableCell 
@@ -528,11 +548,13 @@ const AdminDashboard = () => {
               </TableRow>
             ))
           )}
-          </tbody>
+          </TableBody>
         </Table>
+        </TableContainer>
       )}
     </Container>
   );
 };
 
 export default AdminDashboard;
+
