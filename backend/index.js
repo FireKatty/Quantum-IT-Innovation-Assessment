@@ -4,10 +4,19 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 app.use(cookieParser())
 dotenv.config();
+
+
+app.use(cors({
+    origin: [
+      "https://quantum-it-innovation-assessment.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+  
 
 PORT = process.env.PORT || 5432;
 
